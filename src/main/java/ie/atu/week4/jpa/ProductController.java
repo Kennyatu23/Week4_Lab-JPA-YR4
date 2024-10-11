@@ -29,7 +29,7 @@ public class ProductController {
         return ResponseEntity.ok(productList);
     }
 
-    private Product findProductById(int id) {
+    private Product findProductById(Long id) {
         for (Product product : productList) {
             if (product.getProductCode() == id) {
                 return product;
@@ -40,15 +40,16 @@ public class ProductController {
 
     @PutMapping("/updateProduct/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        productList = productService.updateProduct(id, updatedProduct);
-        //Product existingProduct = findProductById(id), product;
+       productList = productService.updateProduct(id, updatedProduct);
+       // Product existingProduct = productRepository.findAll(id), product;
 
         return ResponseEntity.ok(productList);
+        //return productService.updateProduct(id, updatedProduct);
 
     }
 
     @DeleteMapping("/deleteProduct/{id}")
-    public ResponseEntity<List<Product>> deleteProduct(@PathVariable int id) {
+    public ResponseEntity<List<Product>> deleteProduct(@PathVariable Long id) {
         Product existingProduct = findProductById(id);
 
         if (existingProduct != null) {

@@ -9,40 +9,32 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    private ProductRespository productRespository;
+    private ProductRepository productRepository;
 
-    public ProductService(ProductRespository productRespository){
-        this.productRespository = productRespository;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public List<Product> add(Product product)
-    {
-        productRespository.save(product);
+    public List<Product> add(Product product) {
+        productRepository.save(product);
 
-        return productRespository.findAll();
+        return productRepository.findAll();
     }
 
-    public ResponseEntity<Product> updateProduct(Long id,  Product updatedProduct) {
+    public ResponseEntity<Product> updateProduct(Long id, Product updatedProduct) {
         // Fetch the existing product from the repository// Fetch the existing product from the repository
-        Product existingProduct = productRespository.findById(id);
+        Product existingProduct = productRepository.findById(id).orElse(null);
 
         // Check if the product exists
-        /*if (existingProduct != null) {
+        if (existingProduct != null) {
+            // Update existing product fields
             existingProduct.setProductName(updatedProduct.getProductName());
             existingProduct.setProductDescription(updatedProduct.getProductDescription());
             existingProduct.setProductPrice(updatedProduct.getProductPrice());
-            */
-
-        if (productRespository.findById(id)) {
-
-            existingProduct.setProductName(updatedProduct.getProductName());
-            existingProduct.setProductDescription(updatedProduct.getProductDescription());
-            existingProduct.setProductPrice(updatedProduct.getProductPrice());
+            existingProduct.setProductPrice(updatedProduct.getProductCode());
 
             // Save the updated product back to the repository
-            productRespository.save(existingProduct);
-
-           // return productRespository.findProductById(id) product;
+            productRepository.save(existingProduct);
 
             // Return the updated product with a 200 OK status
             return ResponseEntity.ok(existingProduct);
@@ -54,6 +46,30 @@ public class ProductService {
 
 }
 
+/*
+        if (productRepository.findById(id)) {
+
+            existingProduct.setProductName(updatedProduct.getProductName());
+            existingProduct.setProductDescription(updatedProduct.getProductDescription());
+            existingProduct.setProductPrice(updatedProduct.getProductPrice());
+
+            // Save the updated product back to the repository
+            productRepository.save(existingProduct);
+
+           // return productRepository.findProductById(id) product;
+
+            // Return the updated product with a 200 OK status
+            return ResponseEntity.ok(existingProduct);
+        } else {
+            // Return a 404 Not Found if the product doesn't exist
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+}
+*/
 
 /*
 Finding the Existing Product: Added a line to fetch the existing product from the repository before checking for null.
