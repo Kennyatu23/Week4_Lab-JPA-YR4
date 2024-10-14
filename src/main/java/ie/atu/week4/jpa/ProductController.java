@@ -39,12 +39,12 @@ public class ProductController {
     }
 
     @PutMapping("/updateProduct/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-       productList = productService.updateProduct(id, updatedProduct);
+    public ResponseEntity<List> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+       //productList = productService.updateProduct(id, updatedProduct);
        // Product existingProduct = productRepository.findAll(id), product;
 
         return ResponseEntity.ok(productList);
-        //return productService.updateProduct(id, updatedProduct);
+       // return productService.updateProduct(id, updatedProduct);
 
     }
 

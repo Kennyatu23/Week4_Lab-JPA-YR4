@@ -21,7 +21,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public ResponseEntity<Product> updateProduct(Long id, Product updatedProduct) {
+    public ResponseEntity <List<Product>> updateProduct(Long id, Product updatedProduct) {
         // Fetch the existing product from the repository// Fetch the existing product from the repository
         Product existingProduct = productRepository.findById(id).orElse(null);
 
@@ -36,8 +36,11 @@ public class ProductService {
             // Save the updated product back to the repository
             productRepository.save(existingProduct);
 
+            // Fetch the updated list of products
+            List<Product> allProducts = productRepository.findAll();
+
             // Return the updated product with a 200 OK status
-            return ResponseEntity.ok(existingProduct);
+            return ResponseEntity.ok(allProducts);
         } else {
             // Return a 404 Not Found if the product doesn't exist
             return ResponseEntity.notFound().build();
