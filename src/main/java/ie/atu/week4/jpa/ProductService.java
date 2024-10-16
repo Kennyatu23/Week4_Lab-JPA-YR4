@@ -21,64 +21,43 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public ResponseEntity<Product> updateProduct(Long id, Product updatedProduct) {
-        // Fetch the existing product from the repository// Fetch the existing product from the repository
-        Product existingProduct = productRepository.findById(id).orElse(null);
+    public List<Product> updateProduct(Long id, Product updatedProduct) {
+        // Fetch the list of products from the repository
+        List<Product> products = productRepository.findAll();
 
-        // Check if the product exists
-        if (existingProduct != null) {
-            // Update existing product fields
-            existingProduct.setProductName(updatedProduct.getProductName());
-            existingProduct.setProductDescription(updatedProduct.getProductDescription());
-            existingProduct.setProductPrice(updatedProduct.getProductPrice());
-            existingProduct.setProductPrice(updatedProduct.getProductCode());
-
-            // Save the updated product back to the repository
-            productRepository.save(existingProduct);
-
-            // Return the updated product with a 200 OK status
-            return ResponseEntity.ok(existingProduct);
-        } else {
-            // Return a 404 Not Found if the product doesn't exist
-            return ResponseEntity.notFound().build();
+        // Find the product by its ID and update it
+        for (Product existingProduct : products) {
+            if (existingProduct.getId().equals(id)) {
+                // Update the existing product fields
+                existingProduct.setProductName(updatedProduct.getProductName());
+                existingProduct.setProductDescription(updatedProduct.getProductDescription());
+                existingProduct.setProductPrice(updatedProduct.getProductPrice());
+                existingProduct.setProductCode(updatedProduct.getProductCode());
+                // break;  // Exit loop once the product is found and updated
+            }
         }
-    }
 
-}
+        // Save the updated product list back to the repository
+        productRepository.saveAll(products);
 
-/*
-        if (productRepository.findById(id)) {
-
-            existingProduct.setProductName(updatedProduct.getProductName());
-            existingProduct.setProductDescription(updatedProduct.getProductDescription());
-            existingProduct.setProductPrice(updatedProduct.getProductPrice());
-
-            // Save the updated product back to the repository
-            productRepository.save(existingProduct);
-
-           // return productRepository.findProductById(id) product;
-
-            // Return the updated product with a 200 OK status
-            return ResponseEntity.ok(existingProduct);
-        } else {
-            // Return a 404 Not Found if the product doesn't exist
-            return ResponseEntity.notFound().build();
-        }
+        // Return the updated product list
+        return products;
     }
 
 
+    public List<Product> eraseProduct(Long id) {
+        // Fetch the list of products from the repository
+        List<Product> products = productRepository.findAll();
 
+        // Find and remove the product with the given ID
+        products.removeIf(existingProduct -> existingProduct.getId().equals(id));
+
+        // Save the updated list of products
+        productRepository.saveAll(products);
+
+        // Return the updated product list
+        return products;
+    }
 }
-*/
-
-/*
-Finding the Existing Product: Added a line to fetch the existing product from the repository before checking for null.
-
-ResponseEntity: Properly returned a ResponseEntity object for both successful updates and the case where the product isn’t found.
-
-Save Method: Included a call to productRepository.save(existingProduct) to save the updated product.
-
-Make sure that productRepository is properly defined and injected in your class.
- */
 
 
