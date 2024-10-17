@@ -45,18 +45,15 @@ public class ProductService {
     }
 
 
-    public List<Product> eraseProduct(Long id) {
-        // Fetch the list of products from the repository
-        List<Product> products = productRepository.findAll();
+    public List<Product> deleteProduct(Long id) {
+        // Checking if product exists by the id
+        if (productRepository.existsById(id)) {
+            //Delete product using id
+            productRepository.deleteById(id);
+        }
 
-        // Find and remove the product with the given ID
-        products.removeIf(existingProduct -> existingProduct.getId().equals(id));
+        return productRepository.findAll();
 
-        // Save the updated list of products
-        productRepository.saveAll(products);
-
-        // Return the updated product list
-        return products;
     }
 }
 
